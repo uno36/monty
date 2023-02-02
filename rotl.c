@@ -1,38 +1,26 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
 #include "monty.h"
-
 /**
- * push - push element into the stack
- * @stack: stack given by main
- * @line_cnt: amount of lines
- *
- * Return: void
+  *f_rotl- rotates the stack to the top
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
  */
-void push(stack_t **stack, unsigned int line_cnt)
+void f_rotl(stack_t **head,  __attribute__((unused)) unsigned int counter)
 {
-	char *n = global.argument;
+	stack_t *tmp = *head, *aux;
 
-	if ((is_digit(n)) == 0)
+	if (*head == NULL || (*head)->next == NULL)
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_cnt);
-		exit(EXIT_FAILURE);
+		return;
 	}
-
-	if (global.data_struct == 1)
+	aux = (*head)->next;
+	aux->prev = NULL;
+	while (tmp->next != NULL)
 	{
-		if (!add_node(stack, atoi(global.argument)))
-		{
-			exit(EXIT_FAILURE);
-		}
+		tmp = tmp->next;
 	}
-	else
-	{
-		if (!queue_node(stack, atoi(global.argument)))
-		{
-			exit(EXIT_FAILURE);
-		}
-	}
+	tmp->next = *head;
+	(*head)->next = NULL;
+	(*head)->prev = tmp;
+	(*head) = aux;
 }
